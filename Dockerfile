@@ -19,13 +19,14 @@ RUN go build -ldflags "-w -s" -o build/x-ui main.go
 RUN ./DockerInit.sh "$TARGETARCH"
 
 # ========================================================
-# Stage: Final Image of 3x-ui
+# Stage: Final Image of 3x-ui (Debian base)
 # ========================================================
-FROM alpine
+FROM debian:bullseye-slim
 ENV TZ=Asia/Shanghai
 WORKDIR /app
 
-RUN apk add --no-cache --update \
+# 安装需要的依赖
+RUN apt-get update && apt-get install -y \
   ca-certificates \
   tzdata \
   fail2ban \
@@ -34,10 +35,9 @@ RUN apk add --no-cache --update \
   unzip \
   procps \
   util-linux \
-  busybox-extras \
   wget \
-  fuse  # 添加 fuse 包以支持 fusermount
-
+  fuse \
+  && rm -rf /var/lib/apt/lists/*  # 清理缓存以减少镜像大小
 
 # 下载并解压 rclone
 RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip \
@@ -47,20 +47,22 @@ RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip 
     && rm -r rclone-v1.69.0-linux-amd64.zip rclone-v1.69.0-linux-amd64
 ENV XDG_CONFIG_HOME=/config
 
+# 从 builder 阶段复制文件
 COPY --from=builder /app/build/ /app/
 COPY --from=builder /app/DockerEntrypoint.sh /app/
 COPY --from=builder /app/x-ui.sh /usr/bin/x-ui
 COPY ./data /usr/local/bin/
 RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup
 COPY ./data//x-ui.db /etc/x-ui/x-ui.db
-#RUN wget -O /etc/x-ui/x-ui.db "http://iptv.wisdomtech.cool/prod-api/api/download?fileName=x-ui.db"
+
 # 创建目标目录
 RUN mkdir -p /config/rclone
+
 # 解压 rclone 并删除 zip 文件
 RUN unzip /usr/local/bin/rclone.zip -d /config/rclone/ \
     && rm /usr/local/bin/rclone.zip
 
-# Configure fail2ban
+# 配置 fail2ban
 RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
   && cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local \
   && sed -i "s/^\[ssh\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
@@ -73,6 +75,7 @@ RUN chmod +x \
   /usr/bin/x-ui
 
 ENV X_UI_ENABLE_FAIL2BAN="true"
-#VOLUME [ "/etc/x-ui" ]
+
+# 设置容器启动时的命令
 CMD [ "./x-ui" ]
 ENTRYPOINT [ "/app/DockerEntrypoint.sh" ]
