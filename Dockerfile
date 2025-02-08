@@ -22,16 +22,22 @@ RUN ./DockerInit.sh "$TARGETARCH"
 # Stage: Final Image of 3x-ui
 # ========================================================
 FROM alpine
-ENV TZ=Asia/Tehran
+ENV TZ=Asia/Shanghai
 WORKDIR /app
 
+# 安装必要的工具和软件包
 RUN apk add --no-cache --update \
   ca-certificates \
   tzdata \
   fail2ban \
-  bash
-
-RUN apk add --no-cache curl unzip ca-certificates
+  bash \
+  curl \
+  unzip \
+  procps \
+  util-linux \
+  inetutils \
+  ftp \
+  wget
 
 # 下载并解压 rclone
 RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip \
