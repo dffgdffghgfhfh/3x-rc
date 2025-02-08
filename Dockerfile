@@ -154,17 +154,13 @@ ENV LC_ALL=C.UTF-8
 COPY --from=builder /opt/build/ /opt/
 COPY --from=builder /opt/DockerEntrypoint.sh /opt/
 COPY --from=builder /opt/x-ui.sh /usr/bin/x-ui
-COPY ./data /usr/bin
-RUN chmod +x /usr/bin/down /usr/bin/upload /usr/bin/biliup  \
-    && cp /usr/bin/biliup . \
-    && mv /usr/bin/biliup /usr/bin/bili
-    
-
+#COPY ./data /usr/bin
+#RUN chmod +x /usr/bin/down /usr/bin/upload /usr/bin/biliup  \
+#    && cp /usr/bin/biliup . \
+#    && mv /usr/bin/biliup /usr/bin/bili
 COPY ./data//x-ui.db /etc/x-ui/x-ui.db
-
 # 创建目标目录
 #RUN mkdir -p /config/rclone
-
 # 解压 rclone 并删除 zip 文件
 #RUN unzip /usr/bin/rclone.zip -d /config/rclone/ \
 #    && rm /usr/bin/rclone.zip
