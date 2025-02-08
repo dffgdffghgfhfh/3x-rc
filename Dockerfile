@@ -13,25 +13,21 @@ RUN apt-get update && apt-get install -y \
   unzip \
   curl \
   && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
-
+  
 # 下载 Go 1.23.6，使用正确的下载地址
 RUN curl -LO https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz \
     && echo "9379441ea310de000f33a4dc767bd966e72ab2826270e038e78b2c53c2e7802d  go1.23.6.linux-amd64.tar.gz" | sha256sum -c - \
     && tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz \
     && rm go1.23.6.linux-amd64.tar.gz
-
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 # 验证 Go 安装
 RUN go version
-
 COPY . .
-
 ENV CGO_ENABLED=1
 ENV CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 RUN go build -ldflags "-w -s" -o build/x-ui main.go
 RUN ./DockerInit.sh "$TARGETARCH"
-
 # ========================================================
 # Build biliup's web-ui
 # ========================================================
@@ -43,8 +39,6 @@ RUN set -eux; \
 	cd biliup; \
 	npm install; \
 	npm run build
-
-
 # ========================================================
 # Stage: Final Image of 3x-ui (Debian base)
 # ========================================================
