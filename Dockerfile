@@ -5,13 +5,14 @@ FROM debian:bullseye-slim AS builder
 WORKDIR /app
 ARG TARGETARCH
 
-# 安装构建依赖
+# 安装构建依赖，包括 Go
 RUN apt-get update && apt-get install -y \
   build-essential \
   gcc \
   wget \
   unzip \
   curl \
+  golang-go \
   && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
 
 COPY . .
