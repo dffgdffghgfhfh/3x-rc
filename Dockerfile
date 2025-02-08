@@ -60,6 +60,8 @@ RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip 
     && chmod 755 /usr/local/bin/rclone \
     && rm -r rclone-v1.69.0-linux-amd64.zip rclone-v1.69.0-linux-amd64
 ENV XDG_CONFIG_HOME=/config
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 # 从 builder 阶段复制文件
 COPY --from=builder /app/build/ /app/
