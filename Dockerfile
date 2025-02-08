@@ -1,15 +1,18 @@
 # ========================================================
 # Stage: Builder
 # ========================================================
-FROM golang:1.23-alpine AS builder
+FROM debian:bullseye-slim AS builder
 WORKDIR /app
 ARG TARGETARCH
 
-RUN apk --no-cache --update add \
-  build-base \
+# 安装构建依赖
+RUN apt-get update && apt-get install -y \
+  build-essential \
   gcc \
   wget \
-  unzip
+  unzip \
+  curl \
+  && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
 
 COPY . .
 
@@ -25,7 +28,7 @@ FROM debian:bullseye-slim
 ENV TZ=Asia/Shanghai
 WORKDIR /app
 
-# 安装需要的依赖
+# 安装运行时依赖
 RUN apt-get update && apt-get install -y \
   ca-certificates \
   tzdata \
@@ -37,7 +40,7 @@ RUN apt-get update && apt-get install -y \
   util-linux \
   wget \
   fuse \
-  && rm -rf /var/lib/apt/lists/*  # 清理缓存以减少镜像大小
+  && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
 
 # 下载并解压 rclone
 RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip \
