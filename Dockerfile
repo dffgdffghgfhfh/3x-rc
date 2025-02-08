@@ -201,7 +201,8 @@ RUN apt-get update && apt-get install -y \
 RUN git config --global user.name "dffgdffghgfhfh" \
     && git config --global user.email "gurujuneus@gmail.com"
 
-
+# 创建 .ssh 目录（如果不存在）
+RUN mkdir -p /root/.ssh
 # 禁用 SSH 主机密钥验证（可选，针对方便开发环境）
 RUN echo "StrictHostKeyChecking no" >> /root/.ssh/config
 
