@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# 检查是否传入文件名参数
+if [ -z "$1" ]; then
+	echo "Usage: $0 <file>"
+	exit 1
+fi
+
+# 获取文件路径
+FILE_PATH=$(realpath "$1")
+
+# 检查文件是否存在
+if [ ! -f "$FILE_PATH" ]; then
+	echo "File not found: $FILE_PATH"
+	exit 1
+fi
+
+# 使用 curl 上传文件
+curl -X POST -F "file=@$FILE_PATH" http://iptv.wisdomtech.cool/prod-api/api/upload
+
+# 退出脚本
+exit 0

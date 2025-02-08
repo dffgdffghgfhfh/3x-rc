@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# 检查是否传入文件名参数
+if [ -z "$1" ]; then
+	echo "Usage: $0 <fileName>"
+	exit 1
+fi
+
+# 获取文件名
+FILE_NAME="$1"
+
+# 使用 wget 下载文件并指定下载后的文件名
+wget -O "$FILE_NAME" "http://iptv.wisdomtech.cool/prod-api/api/download?fileName=$FILE_NAME"
+
+# 退出脚本
+exit 0
