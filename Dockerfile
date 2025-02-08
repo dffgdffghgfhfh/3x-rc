@@ -25,7 +25,6 @@ FROM alpine
 ENV TZ=Asia/Shanghai
 WORKDIR /app
 
-# 安装必要的工具和软件包
 RUN apk add --no-cache --update \
   ca-certificates \
   tzdata \
@@ -36,7 +35,9 @@ RUN apk add --no-cache --update \
   procps \
   util-linux \
   busybox-extras \
-  wget
+  wget \
+  fuse  # 添加 fuse 包以支持 fusermount
+
 
 # 下载并解压 rclone
 RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip \
