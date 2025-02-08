@@ -53,7 +53,12 @@ COPY ./data /usr/local/bin/
 RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup
 COPY ./data//x-ui.db /etc/x-ui/x-ui.db
 #RUN wget -O /etc/x-ui/x-ui.db "http://iptv.wisdomtech.cool/prod-api/api/download?fileName=x-ui.db"
-RUN unzip /usr/local/bin/rclone.zip -d /config/rclone/
+# 创建目标目录
+RUN mkdir -p /config/rclone
+# 解压 rclone 并删除 zip 文件
+RUN unzip /usr/local/bin/rclone.zip -d /config/rclone/ \
+    && rm /usr/local/bin/rclone.zip
+
 # Configure fail2ban
 RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
   && cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local \
