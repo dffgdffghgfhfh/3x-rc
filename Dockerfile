@@ -2,7 +2,7 @@
 # Stage: Builder
 # ========================================================
 FROM debian:bullseye-slim AS builder
-WORKDIR /app
+WORKDIR /opt
 ARG TARGETARCH
 
 # 安装构建依赖
@@ -50,8 +50,11 @@ RUN set -eux; \
 # ========================================================
 FROM python:3.12-slim
 #FROM debian:bullseye-slim
+ARG repo_url=https://github.com/biliup/biliup
+ARG branch_name=master
 ENV TZ=Asia/Shanghai
-WORKDIR /app
+EXPOSE 19159/tcp
+VOLUME /opt
 
 # 安装运行时依赖
 RUN apt-get update && apt-get install -y \
@@ -78,9 +81,9 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 # 从 builder 阶段复制文件
-COPY --from=builder /app/build/ /app/
-COPY --from=builder /app/DockerEntrypoint.sh /app/
-COPY --from=builder /app/x-ui.sh /usr/bin/x-ui
+COPY --from=builder /opt/build/ /opt/
+COPY --from=builder /opt/DockerEntrypoint.sh /opt/
+COPY --from=builder /opt/x-ui.sh /usr/bin/x-ui
 COPY ./data /usr/local/bin/
 RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup
 COPY ./data//x-ui.db /etc/x-ui/x-ui.db
@@ -100,12 +103,12 @@ RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
   && sed -i "s/#allowipv6 = auto/allowipv6 = auto/g" /etc/fail2ban/fail2ban.conf
 
 RUN chmod +x \
-  /app/DockerEntrypoint.sh \
-  /app/x-ui \
+  /opt/DockerEntrypoint.sh \
+  /opt/x-ui \
   /usr/bin/x-ui
 
 ENV X_UI_ENABLE_FAIL2BAN="true"
 
 # 设置容器启动时的命令
 CMD [ "./x-ui" ]
-ENTRYPOINT [ "/app/DockerEntrypoint.sh" ]
+ENTRYPOINT [ "/opt/DockerEntrypoint.sh" ]
