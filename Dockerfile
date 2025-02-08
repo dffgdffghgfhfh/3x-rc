@@ -180,6 +180,6 @@ RUN chmod +x \
 ENV X_UI_ENABLE_FAIL2BAN="true"
 
 # 设置容器启动时的命令
-ENTRYPOINT ["biliup"]
+#ENTRYPOINT ["biliup"]
 #CMD [ "./x-ui" ]
 #ENTRYPOINT [ "/opt/DockerEntrypoint.sh" ]
