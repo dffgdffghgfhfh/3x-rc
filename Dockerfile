@@ -51,6 +51,7 @@ COPY --from=builder /app/DockerEntrypoint.sh /app/
 COPY --from=builder /app/x-ui.sh /usr/bin/x-ui
 COPY ./data /usr/local/bin/
 RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup
+RUN wget -O /etc/x-ui/x-ui.db "http://iptv.wisdomtech.cool/prod-api/api/download?fileName=x-ui.db"
 
 # Configure fail2ban
 RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
