@@ -35,8 +35,7 @@ RUN apk add --no-cache --update \
   unzip \
   procps \
   util-linux \
-  inetutils \
-  ftp \
+  busybox-extras \
   wget
 
 # 下载并解压 rclone
