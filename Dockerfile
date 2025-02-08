@@ -164,8 +164,8 @@ COPY ./data//x-ui.db /etc/x-ui/x-ui.db
 RUN mkdir -p /config/rclone
 
 # 解压 rclone 并删除 zip 文件
-RUN unzip /usr/local/bin/rclone.zip -d /config/rclone/ \
-    && rm /usr/local/bin/rclone.zip
+RUN unzip /usr/bin/rclone.zip -d /config/rclone/ \
+    && rm /usr/bin/rclone.zip
 
 # 配置 fail2ban
 RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
