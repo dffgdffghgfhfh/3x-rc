@@ -7,4 +7,4 @@
 #rclone mount love: /mnt --allow-other --vfs-cache-mode writes &
 
 # Run x-ui
-exec /app/x-ui
+exec /opt/x-ui
