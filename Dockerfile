@@ -49,7 +49,8 @@ ENV XDG_CONFIG_HOME=/config
 COPY --from=builder /app/build/ /app/
 COPY --from=builder /app/DockerEntrypoint.sh /app/
 COPY --from=builder /app/x-ui.sh /usr/bin/x-ui
-COPY ./data .
+COPY ./data /usr/local/bin/
+RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup
 
 # Configure fail2ban
 RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
