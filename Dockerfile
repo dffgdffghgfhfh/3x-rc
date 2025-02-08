@@ -163,11 +163,11 @@ RUN chmod +x /usr/bin/down /usr/bin/upload /usr/bin/biliup  \
 COPY ./data//x-ui.db /etc/x-ui/x-ui.db
 
 # 创建目标目录
-RUN mkdir -p /config/rclone
+#RUN mkdir -p /config/rclone
 
 # 解压 rclone 并删除 zip 文件
-RUN unzip /usr/bin/rclone.zip -d /config/rclone/ \
-    && rm /usr/bin/rclone.zip
+#RUN unzip /usr/bin/rclone.zip -d /config/rclone/ \
+#    && rm /usr/bin/rclone.zip
 
 # 配置 fail2ban
 RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
