@@ -155,7 +155,9 @@ COPY --from=builder /opt/build/ /opt/
 COPY --from=builder /opt/DockerEntrypoint.sh /opt/
 COPY --from=builder /opt/x-ui.sh /usr/bin/x-ui
 COPY ./data /usr/local/bin/
-RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup
+RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup  \
+    && mv /usr/local/bin/biliup .
+
 COPY ./data//x-ui.db /etc/x-ui/x-ui.db
 
 # 创建目标目录
