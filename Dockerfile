@@ -168,11 +168,11 @@ RUN unzip /usr/local/bin/rclone.zip -d /config/rclone/ \
     && rm /usr/local/bin/rclone.zip
 
 # 配置 fail2ban
-RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
-  && cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local \
-  && sed -i "s/^\[ssh\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
-  && sed -i "s/^\[sshd\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
-  && sed -i "s/#allowipv6 = auto/allowipv6 = auto/g" /etc/fail2ban/fail2ban.conf
+#RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
+#  && cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local \
+#  && sed -i "s/^\[ssh\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
+#  && sed -i "s/^\[sshd\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
+#  && sed -i "s/#allowipv6 = auto/allowipv6 = auto/g" /etc/fail2ban/fail2ban.conf
 
 RUN chmod +x \
   /opt/DockerEntrypoint.sh \
@@ -183,5 +183,5 @@ ENV X_UI_ENABLE_FAIL2BAN="true"
 
 # 设置容器启动时的命令
 #ENTRYPOINT ["biliup"]
-#CMD [ "./x-ui" ]
-#ENTRYPOINT [ "/opt/DockerEntrypoint.sh" ]
+CMD [ "./x-ui" ]
+ENTRYPOINT [ "/opt/DockerEntrypoint.sh" ]
