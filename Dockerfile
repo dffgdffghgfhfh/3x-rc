@@ -14,10 +14,13 @@ RUN apt-get update && apt-get install -y \
   curl \
   && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
 
-# 安装指定版本的 Go (1.23)
-RUN curl -LO https://golang.org/dl/go1.23.linux-amd64.tar.gz \
-    && tar -C /usr/local -xzf go1.23.linux-amd64.tar.gz \
-    && rm go1.23.linux-amd64.tar.gz
+# 下载 Go 1.23.6，使用正确的下载地址
+RUN curl -LO https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz \
+    && echo "SHA256 Checksum" \
+    && curl -LO https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz.sha256 \
+    && sha256sum -c go1.23.6.linux-amd64.tar.gz.sha256 \
+    && tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz \
+    && rm go1.23.6.linux-amd64.tar.gz go1.23.6.linux-amd64.tar.gz.sha256
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 
