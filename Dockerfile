@@ -5,15 +5,24 @@ FROM debian:bullseye-slim AS builder
 WORKDIR /app
 ARG TARGETARCH
 
-# 安装构建依赖，包括 Go
+# 安装构建依赖
 RUN apt-get update && apt-get install -y \
   build-essential \
   gcc \
   wget \
   unzip \
   curl \
-  golang-go \
   && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
+
+# 安装指定版本的 Go (1.23)
+RUN curl -LO https://golang.org/dl/go1.23.linux-amd64.tar.gz \
+    && tar -C /usr/local -xzf go1.23.linux-amd64.tar.gz \
+    && rm go1.23.linux-amd64.tar.gz
+
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+# 验证 Go 安装
+RUN go version
 
 COPY . .
 
