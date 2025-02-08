@@ -54,8 +54,9 @@ ARG repo_url=https://github.com/biliup/biliup
 ARG branch_name=master
 ENV TZ=Asia/Shanghai
 EXPOSE 19159/tcp
-VOLUME /opt
+#VOLUME /opt
 
+WORKDIR /opt
 # 安装运行时依赖
 RUN apt-get update && apt-get install -y \
   ca-certificates \
