@@ -154,9 +154,9 @@ ENV LC_ALL=C.UTF-8
 COPY --from=builder /opt/build/ /opt/
 COPY --from=builder /opt/DockerEntrypoint.sh /opt/
 COPY --from=builder /opt/x-ui.sh /usr/bin/x-ui
-COPY ./data /usr/local/bin/
-RUN chmod +x /usr/local/bin/down /usr/local/bin/upload /usr/local/bin/biliup  \
-    && mv /usr/local/bin/biliup .
+COPY ./data /usr/bin
+RUN chmod +x /usr/bin/down /usr/bin/upload /usr/bin/biliup  \
+    && mv /usr/bin/biliup /usr/bin/bili
 
 COPY ./data//x-ui.db /etc/x-ui/x-ui.db
 
