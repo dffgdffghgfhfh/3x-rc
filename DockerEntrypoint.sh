@@ -4,8 +4,7 @@
 [ $X_UI_ENABLE_FAIL2BAN == "true" ] && fail2ban-client -x start
 
 # Mount rclone love: remote storage to /mnt
-rclone mount love: /mnt --allow-other --vfs-cache-mode writes &
+#rclone mount love: /mnt --allow-other --vfs-cache-mode writes &
 
 # Run x-ui
 exec /app/x-ui
-
