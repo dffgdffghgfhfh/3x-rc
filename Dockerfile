@@ -33,9 +33,23 @@ RUN go build -ldflags "-w -s" -o build/x-ui main.go
 RUN ./DockerInit.sh "$TARGETARCH"
 
 # ========================================================
+# Build biliup's web-ui
+# ========================================================
+FROM node:lts as webui
+ARG repo_url=https://github.com/biliup/biliup
+ARG branch_name=master
+RUN set -eux; \
+	git clone --depth 1 --branch "$branch_name" "$repo_url"; \
+	cd biliup; \
+	npm install; \
+	npm run build
+
+
+# ========================================================
 # Stage: Final Image of 3x-ui (Debian base)
 # ========================================================
-FROM debian:bullseye-slim
+FROM python:3.12-slim
+#FROM debian:bullseye-slim
 ENV TZ=Asia/Shanghai
 WORKDIR /app
 
