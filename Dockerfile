@@ -182,11 +182,15 @@ ENV X_UI_ENABLE_FAIL2BAN="true"
 # 更新包索引并安装 coreutils 包（包含 ls）
 RUN apt-get update && apt-get install -y \
     coreutils \
+    bash \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置 ls 命令启用颜色
-RUN echo 'alias ls="ls --color=auto"' >> ~/.bashrc \
-    && echo 'eval $(dircolors)' >> ~/.bashrc
+RUN echo 'alias ls="ls --color=auto"' >> /root/.bashrc \
+    && echo 'eval $(dircolors)' >> /root/.bashrc
+
+# 确保 SHELL 环境变量正确设置
+ENV SHELL=/bin/bash
 
 # 设置容器启动时的命令
 #ENTRYPOINT ["biliup"]
