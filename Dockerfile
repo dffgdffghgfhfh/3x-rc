@@ -16,11 +16,9 @@ RUN apt-get update && apt-get install -y \
 
 # 下载 Go 1.23.6，使用正确的下载地址
 RUN curl -LO https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz \
-    && echo "SHA256 Checksum" \
-    && curl -LO https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz.sha256 \
-    && sha256sum -c go1.23.6.linux-amd64.tar.gz.sha256 \
+    && echo "9379441ea310de000f33a4dc767bd966e72ab2826270e038e78b2c53c2e7802d  go1.23.6.linux-amd64.tar.gz" | sha256sum -c - \
     && tar -C /usr/local -xzf go1.23.6.linux-amd64.tar.gz \
-    && rm go1.23.6.linux-amd64.tar.gz go1.23.6.linux-amd64.tar.gz.sha256
+    && rm go1.23.6.linux-amd64.tar.gz
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 
