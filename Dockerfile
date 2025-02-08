@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
   gcc \
   wget \
   unzip \
-  curl \
-  && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
+  curl
+#  \
+#  && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
   
 # 下载 Go 1.23.6，使用正确的下载地址
 RUN curl -LO https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz \
@@ -98,7 +99,7 @@ RUN set -eux; \
 		/tmp/* \
 		/usr/share/doc/* \
 		/var/cache/* \
-		/var/lib/apt/lists/* \
+#		/var/lib/apt/lists/* \
 		/var/tmp/* \
 		/var/log/*
 
@@ -119,7 +120,7 @@ RUN set -eux; \
 		/tmp/* \
 		/usr/share/doc/* \
 		/var/cache/* \
-		/var/lib/apt/lists/* \
+#		/var/lib/apt/lists/* \
 		/var/tmp/* \
 		/var/log/*
 
@@ -137,8 +138,9 @@ RUN apt-get update && apt-get install -y \
   procps \
   util-linux \
   wget \
-  fuse \
-  && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
+  fuse 
+#  \
+#  && rm -rf /var/lib/apt/lists/*  # 清理 apt 缓存以减少镜像体积
 
 # 下载并解压 rclone
 RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip \
