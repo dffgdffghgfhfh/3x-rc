@@ -31,6 +31,16 @@ RUN apk add --no-cache --update \
   fail2ban \
   bash
 
+RUN apk add --no-cache curl unzip ca-certificates
+
+# 下载并解压 rclone
+RUN curl -O https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-linux-amd64.zip \
+    && unzip rclone-v1.69.0-linux-amd64.zip \
+    && cp rclone-v1.69.0-linux-amd64/rclone /usr/local/bin/ \
+    && chmod 755 /usr/local/bin/rclone \
+    && rm -r rclone-v1.69.0-linux-amd64.zip rclone-v1.69.0-linux-amd64
+ENV XDG_CONFIG_HOME=/config
+
 COPY --from=builder /app/build/ /app/
 COPY --from=builder /app/DockerEntrypoint.sh /app/
 COPY --from=builder /app/x-ui.sh /usr/bin/x-ui
