@@ -173,13 +173,20 @@ RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
   && sed -i "s/^\[ssh\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
   && sed -i "s/^\[sshd\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
   && sed -i "s/#allowipv6 = auto/allowipv6 = auto/g" /etc/fail2ban/fail2ban.conf
-
 RUN chmod +x \
   /opt/DockerEntrypoint.sh \
   /opt/x-ui \
   /usr/bin/x-ui
-
 ENV X_UI_ENABLE_FAIL2BAN="true"
+
+# 更新包索引并安装 coreutils 包（包含 ls）
+RUN apt-get update && apt-get install -y \
+    coreutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# 设置 ls 命令启用颜色
+RUN echo 'alias ls="ls --color=auto"' >> ~/.bashrc \
+    && echo 'eval $(dircolors)' >> ~/.bashrc
 
 # 设置容器启动时的命令
 #ENTRYPOINT ["biliup"]
